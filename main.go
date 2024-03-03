@@ -6,19 +6,12 @@ import (
 	"net/http"
 )
 
-func Home(writer http.ResponseWriter, _ *http.Request) {
-	_, err := fmt.Fprintf(writer, "WUBBA LUBBA DUBDUB")
-	if err != nil {
-		println(err)
-	}
-}
+const portNumber = ":8080"
 
 func main() {
 	http.HandleFunc("/", Home)
 
-	//err := http.ListenAndServe(":8080", nil)
-	//
-	//println(err.Error())
+	fmt.Println(fmt.Sprintf("Starting app on port %s", portNumber[1:]))
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(portNumber, nil))
 }
