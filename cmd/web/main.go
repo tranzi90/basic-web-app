@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"webApp/pkg/handlers"
 )
 
 const portNumber = ":8080"
 
 func main() {
-	http.HandleFunc("/", Home)
+	http.HandleFunc("/", handlers.Home)
 
 	fmt.Println(fmt.Sprintf("Starting app on port %s", portNumber[1:]))
 
