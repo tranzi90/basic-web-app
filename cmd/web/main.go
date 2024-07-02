@@ -1,18 +1,36 @@
 package main
 
 import (
+	"bookings-udemy/pkg/config"
+	"bookings-udemy/pkg/handlers"
+	"bookings-udemy/pkg/render"
 	"fmt"
 	"log"
 	"net/http"
-	"webApp/pkg/handlers"
 )
 
 const portNumber = ":8080"
 
+// main is the main function
 func main() {
-	http.HandleFunc("/", handlers.Home)
+	var app config.AppConfig
 
-	fmt.Println(fmt.Sprintf("Starting app on port %s", portNumber[1:]))
+	tc, err := render.CreateTemplateCache()
+	if err != nil {
+		log.Fatal("cannot create template cache")
+	}
 
-	log.Fatal(http.ListenAndServe(portNumber, nil))
+	app.TemplateCache = tc
+	app.UseCache = false
+
+	repo := handlers.NewRepo(&app)
+	handlers.NewHandlers(repo)
+
+	render.NewTemplates(&app)
+
+	http.HandleFunc("/", handlers.Repo.Home)
+	http.HandleFunc("/about", handlers.Repo.About)
+
+	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+	_ = http.ListenAndServe(portNumber, nil)
 }

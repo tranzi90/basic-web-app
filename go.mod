@@ -1,3 +1,3 @@
-module webApp
+module bookings-udemy
 
-go 1.22
+go 1.15
